@@ -13,8 +13,14 @@ void substring(char *in, char *out, int index, int length)
   out[length] = '\0';
 }
 
+
+
+
+
 void encrypt(char *fname)
 {
+  //converts file type
+
   char *pptr = strchr(fname, '.');
   int ppos = pptr - fname;
   char newName[ppos + 1];
@@ -33,30 +39,42 @@ void encrypt(char *fname)
     puts("Error: Empty File");
   }
 
+
+
+//encryption
+
   char outChar;
+  outChar = fgetc(in); //print character by character
+
   while (outChar != EOF)
     {
-        if (outChar == '\n')
-        {
-            fputc('\n', out);
+        if (outChar == '\n'){
+            fputc('\n', out); //converts indent character 
         }
-        else if (outChar == '\t')
-        {
-            fputs("TT", out);
+
+        else if (outChar == '\t'){
+            fputs("TT", out); //converts tab character
         }
-        else
-        {
+
+        else{
             outChar = outChar - 16;
             if (outChar < 32)
             { 
-                outChar = (outChar - 32) + 144;
+                outChar = (outChar - 32) + 144; //if the outchar value<32, perform operation
             }
-            fprintf(out, "%02X", (int)(*(unsigned char*)(&outChar)));
+            fprintf(out, "%02X", (int)(*(unsigned char*)(&outChar))); //print to the file 
         }
-        outChar = fgetc(in);
-
+        
+        outChar = fgetc(in); //print character by character
     }
+
+    fclose(in);
+    fclose(out);
+
+    int rem;
+    rem=remove(fname); //remove txt file after encrypting 
 }
+
 
 int main(int argc, char *argv[])
 { // argc = number of parameters passed, argv = pointer to array of parameters passed
