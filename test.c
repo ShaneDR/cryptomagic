@@ -59,7 +59,7 @@ int main(){
 
     while (ch != EOF)
     {
-        if (ch == '0' && ch2){
+        if (ch == '\n'){
             fputc('\n', outputfile); //converts new line character
             ch = ch2; 
             ch2 = fgetc(inputfile);
