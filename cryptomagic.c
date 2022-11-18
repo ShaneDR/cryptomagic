@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+//substring function for file name changing
 void substring(char *in, char *out, int index, int length)
 {
   int i = 0;
@@ -14,9 +16,7 @@ void substring(char *in, char *out, int index, int length)
 }
 
 
-
-
-
+//encryption function
 void encrypt(char *fname)
 {
   //converts file type
@@ -71,10 +71,56 @@ void encrypt(char *fname)
     fclose(in);
     fclose(out);
 
-    int rem;
-    rem=remove(fname); //remove txt file after encrypting 
+    
 }
 
+void decrypt(char *fname){
+  //converts file type
+
+  char *pptr = strchr(fname, '.');
+  int ppos = pptr - fname;
+  char newName[ppos + 1];
+  substring(fname, newName, 0, ppos);
+  strcat(newName, ".txt");
+
+  FILE *in = fopen(fname, "r");
+  if (in == NULL)
+  {
+    puts("Error: Empty File");
+  }
+
+  FILE *out = fopen(newName, "w");
+  if (out == NULL)
+  {
+    puts("Error: Empty File");
+  }
+
+
+
+
+  char outChar;
+  outChar = fgetc(in); //print character by character
+
+  while (outChar != EOF)
+    {
+        if (outChar == '\n'){
+            fputc('\n', out); //converts new line character 
+        }
+
+        else if (outChar == 'T'&& fgetc(in) == 'T'){
+            fputs("TT", out); //converts tab character
+        }
+          outChar = (outChar*16) + fgetc(in);
+          outChar += 16; 
+
+          if (outChar > 127) {
+            outChar= (outChar - 144) + 32;
+          }
+          putc(outChar, out);
+        }
+          outChar = fgetc(in); //print character by character
+
+    }
 
 int main(int argc, char *argv[])
 { // argc = number of parameters passed, argv = pointer to array of parameters passed
@@ -89,10 +135,15 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1], "-E") == 0)
     { // if the inputted string is "-E", encrypt the specified file
       encrypt(argv[2]);
+      remove("text.txt"); //remove txt file after encrypting 
+
     }
 
-    else if (strcmp(argv[1], "-D") == 0)
-    { // if the inputted string is "-D", decrypt the specified file
+    else if (strcmp(argv[1], "-D") == 0) { // if the inputted string is "-D", decrypt the specified file
+    decrypt(argv[2]);
     }
+
+    else 
+      puts("Invalid input");
   }
 }
