@@ -19,11 +19,19 @@ void substring(char *in, char *out, int index, int length) {
 
 //changes the file type for the output file
 void fileType(char *fname, char *newType, char* newName){
+
   char *pptr = strchr(fname, '.'); // find the position of the period
+
+  if (pptr == NULL){ // if no period is found, append new file type
+    strcpy(newName, fname); 
+    strcat(newName, newType); 
+  } else {
   int ppos = pptr - fname;
   substring(fname, newName, 0, ppos); //copies the old name to the new name up to the period 
   strcat(newName, newType); //appends the new file type to the end of the file name
-}
+    }
+  }
+
 
 //gets the "face value" of the inputted character, used for decryption 
 int faceValue(char symbol) {
@@ -57,7 +65,7 @@ void encrypt(char *fname) {
   fileType(fname, ".crp",newName); //makes a new file name with a .crp extension
   FILE *in = fopen(fname, "r"); //open the inputed file for reading 
   if (in == NULL) {
-    puts("Error: Empty File");
+    puts("Error: Empty File1");
   }
   FILE *out = fopen(newName, "w"); //open the output file for writing
   if (out == NULL){
@@ -139,7 +147,7 @@ int main(int argc, char *argv[]) { // argc = number of parameters passed, argv =
   if (strcmpi(argv[1], "-E") == 0) { // if the inputted string is "-E", encrypt the specified file
       encrypt(argv[2]);
     }
-  else if (strcmpi(argv[1], "-D") == 0) { // if the inputted string is "-D", decrypt the specified file
+  else if (strcmpi(argv[1], "-D") == 0) { // if the inputted string is "-D", decrypt the specified file,
     decrypt(argv[2]);
     }
   else // if the program is ran and no switch is passed, print the menu
