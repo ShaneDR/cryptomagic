@@ -104,8 +104,14 @@ void decrypt(char *fname) {
   char newName[strlen(fname)];
   fileType(fname, ".txt",newName); //makes a new file name with a .crp extension
   
-  FILE *in = fopen(fname, "r");//opens .crp file for reading  
-  FILE *out = fopen(newName, "w"); //opens new .txt file for writing
+  FILE *in = fopen(fname, "r"); //open the inputed file for reading 
+  if (in == NULL) {
+    puts("Error: Empty File");
+  }
+  FILE *out = fopen(newName, "w"); //open the output file for writing
+  if (out == NULL){
+    puts("Error: Empty File");
+  }
 
   char ch = fgetc(in); //holds first character in hex value 
   char ch2 = fgetc(in); //holds second character in hex value
