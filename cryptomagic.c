@@ -16,7 +16,6 @@ void substring(char *in, char *out, int index, int length) {
   }
   out[length] = '\0'; //all string end with "\0"
 }
-
 //changes the file type for the output file
 void fileType(char *fname, char *newType, char* newName){
 
@@ -31,7 +30,6 @@ void fileType(char *fname, char *newType, char* newName){
   strcat(newName, newType); //appends the new file type to the end of the file name
     }
   }
-
 
 //gets the "face value" of the inputted character, used for decryption 
 int faceValue(char symbol) {
@@ -65,7 +63,7 @@ void encrypt(char *fname) {
   fileType(fname, ".crp",newName); //makes a new file name with a .crp extension
   FILE *in = fopen(fname, "r"); //open the inputed file for reading 
   if (in == NULL) {
-    puts("Error: Empty File1");
+    puts("Error: Empty File");
   }
   FILE *out = fopen(newName, "w"); //open the output file for writing
   if (out == NULL){
@@ -143,15 +141,19 @@ void decrypt(char *fname) {
 }
 
 int main(int argc, char *argv[]) { // argc = number of parameters passed, argv = pointer to array of parameters passed
-
+if (argc == 3) {
   if (strcmpi(argv[1], "-E") == 0) { // if the inputted string is "-E", encrypt the specified file
       encrypt(argv[2]);
     }
   else if (strcmpi(argv[1], "-D") == 0) { // if the inputted string is "-D", decrypt the specified file,
     decrypt(argv[2]);
     }
-  else // if the program is ran and no switch is passed, print the menu
+  else // if the program is ran and wrong switch is passed, print the menu
     printf("Enter cryptoMagic -E \"File Name\".txt to encript a file\nEnter cryptoMagic -D \"File Name\".crp to decrypt a file");
-
+} else if (argc == 2){ //if no switch is passed, encrypt
+    encrypt(argv[1]);
+} else { //print menu after checking all parameters 
+    printf("Enter cryptoMagic -E \"File Name\".txt to encript a file\nEnter cryptoMagic -D \"File Name\".crp to decrypt a file");
+}
 return 0; 
 }
